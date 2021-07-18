@@ -108,3 +108,5 @@ while not terminate:
             print("Bye!")
             terminate = True
             break
+
+conn.close()
