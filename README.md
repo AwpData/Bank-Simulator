@@ -8,7 +8,7 @@ Bank simulation with account numbers and pins. Created to refresh Python knowled
 <li>Can transfer money between two accounts</li>
 <li>Credit cards are stored in SQLite database</li>
 <br><br>
-SQLite database is created under the file name **card.s3db**, but you can store to local memory or another file.
+SQLite database is created under the file name <b>card.s3db</b>, but you can store to local memory or another file.
 <br>
 
 ```python
