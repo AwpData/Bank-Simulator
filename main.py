@@ -21,9 +21,19 @@ def get_card_num(account, pin_num):
                             (account, pin_num,)).fetchone())
 
 
-def delete_card(account, pin_num):
+def get_balance(account):
     with conn:
-        cur.execute("DELETE FROM card WHERE number = ? AND pin = ?", (account, pin_num,))
+        return cur.execute("SELECT balance FROM card WHERE number = ?", (account,)).fetchone()[0]
+
+
+def add_income(account, amount):
+    with conn:
+        return cur.execute("UPDATE card SET balance = balance + ? WHERE number = ?", (amount, account,)).fetchone()
+
+
+def delete_card(account):
+    with conn:
+        cur.execute("DELETE FROM card WHERE number = ?", (account,))
 
 
 class CreditCard:
@@ -79,6 +89,7 @@ while not terminate:
         print(tempCard.pin + "\n")
         insert_card_num(tempCard.account_num, tempCard.pin)  # inserts new user into DB
     elif choice == 2 and terminate == False:
+        global card_number
         print("Enter your card number:")
         card_number = str(input())
         print("Enter your PIN:")
@@ -96,12 +107,24 @@ while not terminate:
 
     while logged_in:
         print("1. Balance")
-        print("2. Log out")
-        print("0. Quit")
+        print("2. Add Income")
+        print("3. Do transfer")
+        print("4. Close account")
+        print("5. Log out")
+        print("0. Exit")
         choice = int(input())
         if choice == 1:
-            print("\nBalance: 0\n")
+            print("\nBalance: " + str(get_balance(card_number)))
         elif choice == 2:
+            print("Enter income:")
+            add_income(card_number, int(input()))
+            print("Income was added!")
+        elif choice == 3:
+            pass
+        elif choice == 4:
+            print("The account has been closed!")
+            delete_card(card_number)
+        elif choice == 5:
             logged_in = False
             print("\nYou have successfully logged out!\n")
         elif choice == 0:
