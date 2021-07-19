@@ -10,4 +10,4 @@ Bank simulation with account numbers and pins. Created to refresh Python knowled
 <br><br>
 SQLite database is created under the file name *'card.s3db'*, but you can store to local memory if you want.
 <br><br>
-`conn = sqlite3.connect(":memory:")`
+a`conn = sqlite3.connect(":memory:")`
