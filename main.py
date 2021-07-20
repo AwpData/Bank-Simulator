@@ -158,8 +158,12 @@ while not terminate:
 
         elif choice == 4:
             print("\nPlease enter your new PIN")
-            change_pin(card_number, int(input()))
-            print("Success!\n")
+            pin = int(input())
+            if len(str(pin)) < 4 or len(str(pin)) > 4:
+                print("Error, invalid PIN length\n")
+            else:
+                change_pin(card_number, pin)
+                print("Success!\n")
 
         elif choice == 5:
             print("\nThe account has been closed!\n")
