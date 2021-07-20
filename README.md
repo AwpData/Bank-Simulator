@@ -3,7 +3,7 @@ Bank simulation with account numbers and pins. Created to refresh Python knowled
 
 <h1> Features </h1>
 <li>Random valid credit card numbers using the <a href="https://www.geeksforgeeks.org/luhn-algorithm/" target="_blank">Luhn Algorithm</a></li>
-<li>Random PIN numbers for security</li>
+<li>Random PIN numbers for security (You can change it)</li>
 <li>Able to add money to balance</li>
 <li>Can transfer money between two accounts</li>
 <li>Credit cards are stored in SQLite database</li>
