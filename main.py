@@ -41,6 +41,11 @@ def add_income(account, amount):
         return cur.execute("UPDATE card SET balance = balance + ? WHERE number = ?", (amount, account,)).fetchone()
 
 
+def change_pin(account, pin):
+    with conn:
+        return cur.execute("UPDATE card SET pin = ? WHERE number = ?", (pin, account,)).fetchone()
+
+
 def delete_card(account):
     with conn:
         cur.execute("DELETE FROM card WHERE number = ?", (account,))
@@ -100,7 +105,7 @@ while not terminate:
         insert_card_num(tempCard.account_num, tempCard.pin)  # inserts new user into DB
     elif choice == 2 and terminate == False:
         global card_number
-        print("Enter your card number:")
+        print("\nEnter your card number:")
         card_number = str(input())
         print("Enter your PIN:")
         attempt_pin = str(input())
@@ -110,7 +115,7 @@ while not terminate:
             print("\nYou have successfully logged in!\n")
             logged_in = True
     elif choice == 0:
-        print("Bye!")
+        print("\nBye!")
         terminate = True
     else:
         print("\nI'm not sure what you mean, try again\n")
@@ -119,46 +124,52 @@ while not terminate:
         print("1. Balance")
         print("2. Add Income")
         print("3. Do transfer")
-        print("4. Close account")
-        print("5. Log out")
+        print("4. Change PIN")
+        print("5. Close account")
+        print("6. Log out")
         print("0. Exit")
         choice = int(input())
         if choice == 1:
-            print("\nBalance: " + str(get_balance(card_number)))
+            print("\nBalance: " + str(get_balance(card_number)) + "\n")
         elif choice == 2:
-            print("Enter income:")
+            print("\nEnter income:")
             add_income(card_number, int(input()))
-            print("Income was added!")
+            print("Income was added!\n")
         elif choice == 3:
-            print("Enter card number")
+            print("\nEnter card number")
             transfer_num = str(input())
             if len(transfer_num) < 16:
-                print("Invalid card length, try again! (16 characters)")
+                print("Invalid card length, try again! (16 characters)\n")
             elif luhn_algorithm(transfer_num) != transfer_num[len(transfer_num) - 1]:  # Checks Luhn Algo validity
-                print("Probably you made a mistake in the card number. Please try again!")
+                print("Probably you made a mistake in the card number. Please try again!\n")
             elif find_card(transfer_num) is None:
-                print("Such a card does not exist.")
+                print("Such a card does not exist.\n")
             elif find_card(transfer_num)[0] == card_number:
-                print("You can't transfer money to the same account!")
+                print("You can't transfer money to the same account!\n")
             else:
                 print("Enter how much money you want to transfer:")
                 transfer_money = int(input())
                 if transfer_money > int(get_balance(card_number)):
-                    print("Not enough money!")
+                    print("Not enough money!\n")
                 else:
                     remove_income(card_number, transfer_money)
                     add_income(transfer_num, transfer_money)
-                    print("Success!")
+                    print("Success!\n")
 
         elif choice == 4:
-            print("The account has been closed!")
+            print("\nPlease enter your new PIN")
+            change_pin(card_number, int(input()))
+            print("Success!\n")
+
+        elif choice == 5:
+            print("\nThe account has been closed!\n")
             delete_card(card_number)
             logged_in = False
-        elif choice == 5:
+        elif choice == 6:
             logged_in = False
             print("\nYou have successfully logged out!\n")
         elif choice == 0:
-            print("Bye!")
+            print("\nBye!")
             terminate = True
             break
 
